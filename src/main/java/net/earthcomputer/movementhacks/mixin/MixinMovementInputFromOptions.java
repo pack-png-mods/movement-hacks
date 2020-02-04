@@ -49,6 +49,7 @@ public class MixinMovementInputFromOptions extends MovementInput {
         iPlayer.setSprinting(sprinting);
         if (doublePressedJump) {
             iPlayer.setFlying(!iPlayer.isFlying());
+            doublePressedJump = false;
         }
     }
 
