@@ -33,7 +33,7 @@ public class MixinMovementInputFromOptions extends MovementInput {
         boolean pressedJump = field_1179_f[4] && !wasJumping;
         doublePressedJump = false;
         if (pressedJump) {
-            if (ticksSinceJump < 15) {
+            if (ticksSinceJump < 5) {
                 doublePressedJump = true;
                 ticksSinceJump = 100;
             } else {
