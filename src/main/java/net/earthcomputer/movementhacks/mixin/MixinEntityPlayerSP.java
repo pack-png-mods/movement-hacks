@@ -1,10 +1,7 @@
 package net.earthcomputer.movementhacks.mixin;
 
 import net.earthcomputer.movementhacks.IPlayer;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.MovementInput;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,8 +29,13 @@ public class MixinEntityPlayerSP extends EntityPlayer implements IPlayer {
     @Override
     public void setFlying(boolean flying) {
         this.flying = flying;
-        if (flying)
+        if (flying) {
             immuneToFallDamage = true;
+        } else {
+            // step sound counter
+            ((EntityAccessor) this).setField_653_b(1);
+            this.field_641_aF = 0;
+        }
     }
 
     @Override
@@ -67,5 +69,15 @@ public class MixinEntityPlayerSP extends EntityPlayer implements IPlayer {
         }
         if (onGround)
             flying = immuneToFallDamage = false;
+    }
+
+    @Inject(method = "writeEntityToNBT", at = @At("RETURN"))
+    private void onWriteEntityToNBT(NBTTagCompound nbt, CallbackInfo ci) {
+        nbt.setBoolean("Flying", flying);
+    }
+
+    @Inject(method = "readEntityFromNBT", at = @At("RETURN"))
+    private void onReadEntityFromNBT(NBTTagCompound nbt, CallbackInfo ci) {
+        setFlying(nbt.getBoolean("Flying"));
     }
 }

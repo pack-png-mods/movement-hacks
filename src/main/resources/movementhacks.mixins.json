@@ -3,12 +3,13 @@
   "package": "net.earthcomputer.movementhacks.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "EntityAccessor"
   ],
   "client": [
-    "MixinEntityPlayerSP",
-    "MixinMovementInputFromOptions",
+    "MixinEntity",
     "MixinEntityLiving",
-    "MixinEntity"
+    "MixinEntityPlayerSP",
+    "MixinMovementInputFromOptions"
   ],
   "injectors": {
     "defaultRequire": 1
